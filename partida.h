@@ -4,6 +4,8 @@
 #include "jugador.h"
 #include "iajugador.h"
 #include "tabladanio.h"
+#include "elemento.h"
+#include <string>
 
 class Partida
 {
@@ -38,6 +40,9 @@ public:
 
     Elemento* getElementoActivoJugador() const;
     Elemento* getElementoActivoIA() const;
+
+    //Para "reconstruir" un elemento
+    Elemento* crearElementoDesdeTipo(const std::string& tipo);
 };
 
 #endif // PARTIDA_H
