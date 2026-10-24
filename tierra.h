@@ -2,6 +2,8 @@
 #define TIERRA_H
 
 #include "elemento.h"
+#include <ostream>
+#include <istream>
 
 class Tierra : public Elemento
 {
