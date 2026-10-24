@@ -1,5 +1,8 @@
 #include "partida.h"
 #include <iostream>
+#include "agua.h"
+#include "fuego.h"
+#include "tierra,h"
 
 Partida::Partida(Jugador *jugador, IAJugador *iaJugador)
     : jugador(jugador),
@@ -126,4 +129,16 @@ Elemento* Partida::getElementoActivoJugador() const
 Elemento* Partida::getElementoActivoIA() const
 {
     return elementoActivoIA;
+}
+
+//Para "crearElementoDesdeTipo"
+Elemento* Partida::crearElementoDesdeTipo(const std::string& tipo)
+{
+    if(tipo=="AGUA")
+        return new Agua();
+    else if (tipo=="FUEGO")
+        return new Fuego();
+    else if (tipo=="TIERRA")
+        return new Tierra();
+    return NULL;
 }
