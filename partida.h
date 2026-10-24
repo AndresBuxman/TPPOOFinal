@@ -22,7 +22,8 @@ public:
     void iniciar();
     void ejecutarRonda();
     void aplicarCombate(Elemento& e1, Elemento& e2);
-
+    void guardar(const std::string& archivo) const;
+    void cargar(const std::string& archivo);
     bool hayGanador() const;
     Jugador* getGanador() const;
 
