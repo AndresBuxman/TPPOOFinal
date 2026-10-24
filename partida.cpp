@@ -3,7 +3,7 @@
 #include <fstream>
 #include "agua.h"
 #include "fuego.h"
-#include "tierra,h"
+#include "tierra.h"
 
 Partida::Partida(Jugador *jugador, IAJugador *iaJugador)
     : jugador(jugador),
