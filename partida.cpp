@@ -1,5 +1,6 @@
 #include "partida.h"
 #include <iostream>
+#include <fstream>
 #include "agua.h"
 #include "fuego.h"
 #include "tierra,h"
@@ -141,4 +142,69 @@ Elemento* Partida::crearElementoDesdeTipo(const std::string& tipo)
     else if (tipo=="TIERRA")
         return new Tierra();
     return NULL;
+}
+
+//Para guardar partida
+void Partida::guardar(const std::string& archivo)
+{
+    std::ofstream out(archivo);
+    if (!out.is_open())
+        return;
+
+    //Para guardar jugador
+    out << jugador->cantidadElementos() << '\n';
+    for (int i = 0; i < jugador->cantidadElementos(); ++i) {
+        jugador->getElemento(i)->guardar(out);
+    }
+    out << jugador->getIndiceElementoActivo() << '\n';
+
+    //Para guardar IA
+    out << iaJugador->cantidadElementos() << '\n';
+    for (int i = 0; i < iaJugador->cantidadElementos(); ++i) {
+        iaJugador->getElemento(i)->guardar(out);
+    }
+    out << iaJugador->getIndiceElementoActivo() << '\n';
+}
+
+//Para la carga de partida
+void Partida::cargar(const std::string& archivo)
+{
+    std::ifstream in(archivo);
+    if (!in.is_open())
+        return;
+
+    std::string tipo;
+    int cantidad = 0;
+    int indiceActivo = -1;
+
+    //Para cargar jugador
+    jugador->limpiarElementos();
+
+    in >> cantidad;
+    for (int i = 0; i < cantidad; ++i) {
+        in >> tipo;
+        Elemento* e = crearElementoDesdeTipo(tipo);
+        if (e == nullptr)
+            return;
+
+        e->cargar(in);
+        jugador->agregarElemento(e);
+    }
+
+    in >> indiceActivo;
+    jugador->setIndiceElementoActivo(indiceActivo);
+
+    //Para cargar IA
+    iaJugador->limpiarElementos();
+    in >> cantidad;
+    for (int i = 0; i < cantidad; ++i) {
+        in >> tipo;
+        Elemento* e = crearElementoDesdeTipo(tipo);
+        if (e == nullptr)
+            return;
+        e->cargar(in);
+        iaJugador->agregarElemento(e);
+    }
+    in >> indiceActivo;
+    iaJugador->setIndiceElementoActivo(indiceActivo);
 }
