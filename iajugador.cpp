@@ -7,6 +7,7 @@ IAJugador::~IAJugador() {
 }
 
 Elemento* IAJugador::seleccionarElementoIA(const Elemento* oponenteActivo, const TablaDanio& tabla) {
+    if(modo==nullptr) return nullptr;
     std::vector<Elemento*> vivos = getElementosVivos();
     return modo->seleccionarIA(vivos, oponenteActivo, tabla);
 }
