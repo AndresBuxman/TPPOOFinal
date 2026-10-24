@@ -2,6 +2,8 @@
 #define FUEGO_H
 
 #include "elemento.h"
+#include <ostream>
+#include <istream>
 
 class Fuego : public Elemento
 {
