@@ -2,6 +2,8 @@
 #define AGUA_H
 
 #include "elemento.h"
+#include <ostream>
+#include <istream>
 
 class Agua : public Elemento
 {
