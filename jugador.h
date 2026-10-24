@@ -20,6 +20,7 @@ public:
     Jugador(const Jugador&) = delete;
     Jugador& operator=(const Jugador&) = delete;
     void agregarElemento(Elemento* elemento);
+    void limpiarElementos();
 
     virtual Elemento* seleccionarElemento();
 
@@ -27,8 +28,13 @@ public:
     const std::vector<Elemento*>& getElementos() const;
     std::vector<Elemento*> getElementosVivos() const;
 
+    int cantidadElementos() const;
+    Elemento* getElemento(int indice)const;
+
     const std::string& getNombre() const;
     Elemento* getElementoActivo() const;
+    int getIndiceElementoActivo() const;
+    void setIndiceElementoActivo(int indice);
     void avanzarAlSiguienteVivo(); // reemplaza al elemento activo cuando muere.
 };
 
