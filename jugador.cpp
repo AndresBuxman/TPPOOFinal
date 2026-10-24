@@ -15,6 +15,16 @@ void Jugador::agregarElemento(Elemento* elemento) {
         indiceActivo = static_cast<int>(elementos.size()) - 1;
     }
 }
+
+void Jugador::limpiarElementos()
+{
+   for(Elemento* e:elementos){
+        delete e;
+   } 
+    elementos.clear();
+    indiceActivo=-1;
+}
+
 bool Jugador::tieneElementosVivos() const {
     for (const Elemento* e : elementos) {
         if (e->estaVivo()) return true;
@@ -32,6 +42,18 @@ std::vector<Elemento*> Jugador::getElementosVivos() const {
     }
     return vivos;
 }
+//Para la cantidad de elementos
+int Jugador::cantidadElementos()const
+{
+    return static_cast<int>(elementos.size());
+}
+//Para getElemento
+Elemento* Jugador::getElemento(int indice) const
+{
+    if(indice<0||indice>=static_cast<int>(elementos.size()))
+        return NULL;
+    return elementos[indice];   
+}
 
 Elemento* Jugador::seleccionarElemento()
 {
@@ -43,6 +65,16 @@ const std::string& Jugador::getNombre() const { return nombre; }
 Elemento* Jugador::getElementoActivo() const {
     if (indiceActivo < 0 || indiceActivo >= static_cast<int>(elementos.size())) return nullptr;
     return elementos[indiceActivo];
+}
+
+//Para el indice del elementoActivo
+int Jugador::getIndiceElementoActivo(int indice)
+{
+    if (indice<-1||indice>=static_cast<int>(elementos.size())){
+        indiceActivo=-1;
+        return;
+    }
+    indiceActivo=indice;
 }
 
 void Jugador::avanzarAlSiguienteVivo() {
