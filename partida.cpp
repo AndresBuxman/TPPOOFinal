@@ -141,11 +141,11 @@ Elemento* Partida::crearElementoDesdeTipo(const std::string& tipo)
         return new Fuego();
     else if (tipo=="TIERRA")
         return new Tierra();
-    return NULL;
+    return nullptr;
 }
 
 //Para guardar partida
-void Partida::guardar(const std::string& archivo)
+void Partida::guardar(const std::string& archivo) const
 {
     std::ofstream out(archivo);
     if (!out.is_open())
