@@ -2,6 +2,8 @@
 #define ELEMENTO_H
 
 #include <string>
+#include <ostream>
+#include <istream>
 #include "tipoelemento.h"
 
 class TablaDanio;
