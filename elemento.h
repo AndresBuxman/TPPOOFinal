@@ -25,6 +25,13 @@ public:
     virtual TipoElemento getTipoAtaque() const;
     virtual TipoElemento getTipoDefensa() const;
 
+    //Para guardar y cargar
+    virtual void guardar(std::ostream& out) const=0;
+    virtual void cargar(std::istream& in) =0;
+
+    //Para identificar el tipo de un elemento
+    virtual std::string getTipoString() const=0;
+
     //getters y setters.
     const std::string& getNombre() const;
     float getEnergia() const;
