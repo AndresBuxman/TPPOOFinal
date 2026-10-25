@@ -68,9 +68,16 @@ Elemento* Jugador::getElementoActivo() const {
 }
 
 //Para el indice del elementoActivo
-int Jugador::getIndiceElementoActivo(int indice)
+int Jugador::getIndiceElementoActivo()
 {
-    if (indice<-1||indice>=static_cast<int>(elementos.size())){
+    return indiceActivo;
+}
+void Jugador::setIndiceElementoActivo(int indice){
+    if (indice<-1)||(indice>=static_cast<int>(elementos.size())){
+        indiceActivo=-1;
+        return;
+    }
+    if (indice>=0 && !elementos[indice]->estaVivo()){
         indiceActivo=-1;
         return;
     }
