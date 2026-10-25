@@ -6,6 +6,8 @@ Elemento::Elemento(const std::string& nombre, TipoElemento tipo, float energiaIn
     : nombre(nombre), energia(energiaInicial), tipoelemento(tipo) {}
 
 void Elemento::ejecutarAtaque(Elemento& objetivo, const TablaDanio& tabla) {
+    if (!estaVivo()||!objetivo.estaVivo()
+        return;
     float danio = tabla.getDanio(*this, objetivo);
     objetivo.recibirDanio(danio);
 }
