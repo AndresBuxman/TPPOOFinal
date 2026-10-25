@@ -1,6 +1,7 @@
 #include "partida.h"
 #include <iostream>
 #include <fstream>
+#include <vector>
 #include "agua.h"
 #include "fuego.h"
 #include "tierra.h"
@@ -170,41 +171,103 @@ void Partida::guardar(const std::string& archivo) const
 void Partida::cargar(const std::string& archivo)
 {
     std::ifstream in(archivo);
-    if (!in.is_open())
+    if (!in.is_open()){
+        std::cerr<<"No se pudo abrir el archivo guardado.\n";
         return;
-
-    std::string tipo;
+    }
+    std::vector<Elemento*> elementosJugador;
+    std::vector<Elemento*> elementosIA;
+    auto liberar=[](std::vector<Elemento*>& elementos){
+        for(Elemento* e:elementos)
+            delete e;
+        elementos.clear();
+    };
     int cantidad = 0;
     int indiceActivo = -1;
+    int indiceIA= -1;
+    std::string tipo;
 
-    //Para cargar jugador
+    //Para leer elementos del jugador
+    if (!(in>>cantidad)||cantidad<0||cantidad>5{
+        std::cerr<<"La cantidad de elementos es inválida.\n";
+        return;
+    }
+    for (int i = 0; i < cantidad; ++i) {
+        if(!(in >> tipo)){
+            liberar(elementosJugador);
+            return;
+    }
+        Elemento* e = crearElementoDesdeTipo(tipo);
+        if (e == nullptr){
+            liberar(elementosJugador);
+            std::cerr<<"El tipo de elemento es desconocido.\n";
+            return;
+        }
+        e->cargar(in);
+        if (!in){
+            delete e;
+            liberar(elementosJugador);
+            return;
+        }
+        elementosJugador.push_back(e);
+    }
+    if (!(in>>indiceJugador)){
+            liberar(elementosJugador);
+            return;
+    }
+    //Para leer los elementos de IA
+    if (!(in>>cantidad)||cantidad<0||cantidad>5){
+            liberar(elementosJugador);
+            return;
+    }
+    for (int i = 0; i < cantidad; ++i) {
+        if(!(in >> tipo)){
+            liberar(elementosJugador);
+            liberar(elementosIA);
+            return;
+        }
+        Elemento* e = crearElementoDesdeTipo(tipo);
+        if (e == nullptr){
+            liberar(elementosJugador);
+            liberar(elementosIA);
+            return;
+        }
+        e->cargar(in);
+        if (!in){
+            delete e;
+            liberar(elementosJugador);
+            liberar(elementosIA);
+            return;
+        }
+        elementosIA.push_back(e);
+    }
+    if (!(in>>indiceIA)){
+            liberar(elementosJugador);
+            liberar(elementosIA);
+            return;
+        }
+    //Verficar antes de reemplazar los equipos
+    auto indiceValido=[](int indice,const std::vector<Elemento*>& elementos){
+        return (indice==-1 || (indice>=0 && indice<static_cast<int>(elementos.size()) && elementos[indice]->estaVivo());
+    };
+    if(!indiceValido(indiceJugador, elementosJugador) || !indiceValido(indiceIA,elementosIA)){
+        liberar(elementosJugador);
+        liberar(elementosIA);
+        std::cerr<<"El índice Activo es inválido en el archivo.\n";
+        return;
+    }
+    //Para reemplazar equipos si la lectura es correcta
     jugador->limpiarElementos();
-
-    in >> cantidad;
-    for (int i = 0; i < cantidad; ++i) {
-        in >> tipo;
-        Elemento* e = crearElementoDesdeTipo(tipo);
-        if (e == nullptr)
-            return;
-
-        e->cargar(in);
-        jugador->agregarElemento(e);
-    }
-
-    in >> indiceActivo;
-    jugador->setIndiceElementoActivo(indiceActivo);
-
-    //Para cargar IA
     iaJugador->limpiarElementos();
-    in >> cantidad;
-    for (int i = 0; i < cantidad; ++i) {
-        in >> tipo;
-        Elemento* e = crearElementoDesdeTipo(tipo);
-        if (e == nullptr)
-            return;
-        e->cargar(in);
-        iaJugador->agregarElemento(e);
-    }
-    in >> indiceActivo;
-    iaJugador->setIndiceElementoActivo(indiceActivo);
+    for (Elemento* e: elementosJugador)
+        jugador->agregarElementos(e);
+    for (Elemento* e: elementosIA)
+        jugador->agregarElementos(e);
+    elementosJugador.clear();
+    elementosIA.clear();
+jugador->setIndiceElementoActivo(indiceJugador);
+iaJugador->setIndiceElementoActivo(indiceIA);
+elementoActivoJugador=jugador->getElementoActivo();
+elementoActivoIA=iaJugador->getElementoActivo();
+std::cout<<"La partida se cargó de forma correcta.\n";
 }
